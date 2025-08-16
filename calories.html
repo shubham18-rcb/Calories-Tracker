@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calorie Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      width: 380px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    input {
+      padding: 10px;
+      margin: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      padding: 10px 15px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #218838;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+    li {
+      background: #f1f1f1;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .delete {
+      background: crimson;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .delete:hover {
+      background: darkred;
+    }
+    .total {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🍎 Calorie Tracker</h2>
+    <input type="text" id="foodInput" placeholder="Enter food item">
+    <input type="number" id="calorieInput" placeholder="Calories">
+    <button onclick="addEntry()">Add</button>
+
+    <ul id="entryList"></ul>
+
+    <div class="total">Total Calories: <span id="totalCalories">0</span> kcal</div>
+  </div>
+
+  <script>
+    const foodInput = document.getElementById("foodInput");
+    const calorieInput = document.getElementById("calorieInput");
+    const entryList = document.getElementById("entryList");
+    const totalCaloriesEl = document.getElementById("totalCalories");
+
+    let totalCalories = 0;
+
+    function addEntry() {
+      const food = foodInput.value.trim();
+      const calories = parseInt(calorieInput.value);
+
+      if (food === "" || isNaN(calories) || calories <= 0) {
+        alert("Please enter a valid food item and calories!");
+        return;
+      }
+
+      // Create list item
+      const li = document.createElement("li");
+      li.textContent = `${food} - ${calories} kcal`;
+
+      // Delete button
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "X";
+      delBtn.className = "delete";
+      delBtn.onclick = () => {
+        entryList.removeChild(li);
+        totalCalories -= calories;
+        updateTotal();
+      };
+
+      li.appendChild(delBtn);
+      entryList.appendChild(li);
+
+      // Update total
+      totalCalories += calories;
+      updateTotal();
+
+      // Clear inputs
+      foodInput.value = "";
+      calorieInput.value = "";
+    }
+
+    function updateTotal() {
+      totalCaloriesEl.textContent = totalCalories;
+    }
+  </script>
+</body>
+</html>
